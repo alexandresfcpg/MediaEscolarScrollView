@@ -1,5 +1,6 @@
 package app.daazi.aluno.mediaescolarscrollview;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,25 +19,86 @@ import app.daazi.aluno.mediaescolarscrollview.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button btnPrimeiroBimestre, btnSegundoBimestre, btnTerceiroBimestre, btnQuartoBimestre, btnResultadoFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        btnPrimeiroBimestre = findViewById(R.id.btnPrimeiroBimestre);
+        btnSegundoBimestre = findViewById(R.id.btnSegundoBimestre);
+        btnTerceiroBimestre = findViewById(R.id.btnTerceiroBimestre);
+        btnQuartoBimestre = findViewById(R.id.btnQuartoBimestre);
+        btnResultadoFinal = findViewById(R.id.btnResultadoFinal);
+
+        btnPrimeiroBimestre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent proximaTela = new Intent(MainActivity.this, PrimeiroBimestreActivity.class);
+                startActivity(proximaTela);
+                
+            }
+        });
+
+        btnSegundoBimestre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent proximaTela = new Intent(MainActivity.this, SegundoBimestreActivity.class);
+                startActivity(proximaTela);
+
+            }
+        });
+
+        btnTerceiroBimestre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent proximaTela = new Intent(MainActivity.this, TerceiroBimestreActivity.class);
+                startActivity(proximaTela);
+
+            }
+        });
+
+        btnQuartoBimestre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent proximaTela = new Intent(MainActivity.this, QuartoBimestreActivity.class);
+                startActivity(proximaTela);
+
+            }
+        });
+
+        btnResultadoFinal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent proximaTela = new Intent(MainActivity.this, PrimeiroBimestreActivity.class);
+                startActivity(proximaTela);
+
+            }
+        });
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener((view -> {
             Snackbar.make(view,"Replace with your own action",
                     .setAction("Action", null).show();
         });
 
+    }
+
+    private void setSupportActionBar(Toolbar toolbar) {
     }
 
     @Override
