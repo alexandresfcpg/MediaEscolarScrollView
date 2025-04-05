@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
        primeiroBimestre = true;
 
        if (primeiroBimestre) {
-           btnPrimeiroBimestre.setEnabled(false);
+           btnPrimeiroBimestre.setEnabled(true);
            btnSegundoBimestre.setEnabled(true);
            btnPrimeiroBimestre.setText("FECHADO");
        }
