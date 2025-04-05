@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +16,7 @@ public class TerceiroBimestreActivity extends AppCompatActivity {
 
     Button btnCalcular;
     EditText editMateria, editNotaProva, editNotaTrabalho;
-    TextView txtResultado, txtSituacao;
+    TextView txtResultado, txtSituacaoFinal;
 
     double notaProva;
     double notaTrabalho;
@@ -30,15 +29,15 @@ public class TerceiroBimestreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terceiro_bimestre);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       /* Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
         editMateria = findViewById(R.id.editMateria);
         editNotaProva = findViewById(R.id.editNotaProva);
         editNotaTrabalho = findViewById(R.id.editNotaTrabalho);
         btnCalcular = findViewById(R.id.btnCalcular);
         txtResultado = findViewById(R.id.txtResultado);
-        txtSituacao = findViewById(R.id.txtSituacao);
+        txtSituacaoFinal = findViewById(R.id.txtSituacaoFinal);
 
         btnCalcular.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +72,8 @@ public class TerceiroBimestreActivity extends AppCompatActivity {
                         media = (notaProva + notaTrabalho) / 2;
                         txtResultado.setText(String.valueOf(media));
 
-                        if (media >= 7) txtSituacao.setText("Aprovado");
-                        else txtSituacao.setText("Reprovado");
+                        if (media >= 7) txtSituacaoFinal.setText("Aprovado");
+                        else txtSituacaoFinal.setText("Reprovado");
 
                     }
                 }catch (Exception e){
@@ -83,6 +82,9 @@ public class TerceiroBimestreActivity extends AppCompatActivity {
             }
         });
     }
+
+    /*private void setSupportActionBar(Toolbar toolbar) {
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

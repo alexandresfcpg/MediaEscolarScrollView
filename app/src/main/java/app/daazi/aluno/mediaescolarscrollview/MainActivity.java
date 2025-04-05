@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -20,19 +21,22 @@ import app.daazi.aluno.mediaescolarscrollview.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
     Button btnPrimeiroBimestre, btnSegundoBimestre, btnTerceiroBimestre, btnQuartoBimestre, btnResultadoFinal;
 
+    boolean primeiroBimestre, segundoBimestre, terceiroBimestre, quartoBimestre;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        /*Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
         btnPrimeiroBimestre = findViewById(R.id.btnPrimeiroBimestre);
         btnSegundoBimestre = findViewById(R.id.btnSegundoBimestre);
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent proximaTela = new Intent(MainActivity.this, PrimeiroBimestreActivity.class);
                 startActivity(proximaTela);
-                
+
             }
         });
 
@@ -84,22 +88,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent proximaTela = new Intent(MainActivity.this, PrimeiroBimestreActivity.class);
-                startActivity(proximaTela);
+                Toast.makeText(getApplicationContext(), "Resultado Final", Toast.LENGTH_SHORT).show();
 
             }
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener((view -> {
-            Snackbar.make(view,"Replace with your own action",
-                    .setAction("Action", null).show();
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
         });
 
     }
 
-    private void setSupportActionBar(Toolbar toolbar) {
-    }
+    /*private void setSupportActionBar(Toolbar toolbar) {
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -125,28 +132,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
 
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+
+        Log.i("MediaEscolar", "---> OnResume");
+
+       primeiroBimestre = true;
+
+       if (primeiroBimestre) {
+           btnPrimeiroBimestre.setEnabled(false);
+           btnSegundoBimestre.setEnabled(true);
+           btnPrimeiroBimestre.setText("FECHADO");
+       }
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
+    }
+
+    public void onRestart(){
+        super.onRestart();
     }
 }
