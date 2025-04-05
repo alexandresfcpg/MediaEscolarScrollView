@@ -1,6 +1,7 @@
 package app.daazi.aluno.mediaescolarscrollview;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,9 +27,14 @@ import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String NOME_SHARED_PREFER = "mediaEscolarPref";
+
     Button btnPrimeiroBimestre, btnSegundoBimestre, btnTerceiroBimestre, btnQuartoBimestre, btnResultadoFinal;
 
     boolean primeiroBimestre, segundoBimestre, terceiroBimestre, quartoBimestre;
+
+    String situacaoAtualPrimeiroBimestre, materiaPrimeiroBimestre;
+    double notaProvaPrimeiroBimestre, notaTrabalhoPrimeiroBimestre, mediaPrimeiroBimestre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         /*Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
+
+        Log.i("MediaEscolar","onCreate");
+
+        lerSharedPreferences();
 
         btnPrimeiroBimestre = findViewById(R.id.btnPrimeiroBimestre);
         btnSegundoBimestre = findViewById(R.id.btnSegundoBimestre);
@@ -129,6 +139,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void lerSharedPreferences(){
+
+        SharedPreferences mediaEscolarPref = getSharedPreferences(NOME_SHARED_PREFER, 0);
+
+        primeiroBimestre = mediaEscolarPref.getBoolean("primeiroBimestre", false);
+        situacaoAtualPrimeiroBimestre = mediaEscolarPref.getString("txtSituacaoFinal", "");
+        materiaPrimeiroBimestre = mediaEscolarPref.getString("materia", "");
+        mediaPrimeiroBimestre = Double.parseDouble(mediaEscolarPref.getString("media", "0.0"));
+        notaProvaPrimeiroBimestre = Double.parseDouble(mediaEscolarPref.getString("notaProva", "0.0"));
+        notaTrabalhoPrimeiroBimestre = Double.parseDouble(mediaEscolarPref.getString("notaTrabalho", "0.0"));
+
+       int x = 0;
+    }
+
+    private void clearSharedPreferences(){
+
     }
 
     @Override

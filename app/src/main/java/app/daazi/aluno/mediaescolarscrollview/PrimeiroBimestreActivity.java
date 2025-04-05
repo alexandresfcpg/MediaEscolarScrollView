@@ -112,12 +112,13 @@ public class PrimeiroBimestreActivity extends AppCompatActivity {
 
     private void salvarSharedPreferences(){
 
-        SharedPreferences mediaEscolarPref = getSharedPreferences("mediaEscolarPref", 0);
+        SharedPreferences mediaEscolarPref = getSharedPreferences(MainActivity.NOME_SHARED_PREFER, 0);
 
         SharedPreferences.Editor mediaEscolar = mediaEscolarPref.edit();
 
         mediaEscolar.putString("txtResultado", txtResultado.getText().toString());
         mediaEscolar.putString("txtSituacaoFinal", txtSituacaoFinal.getText().toString());
+        mediaEscolar.putString("materia", editMateria.getText().toString());
         mediaEscolar.putString("notaProva", String.valueOf(notaProva));
         mediaEscolar.putString("notaTrabalho", String.valueOf(notaTrabalho));
         mediaEscolar.putString("media", String.valueOf(media));
