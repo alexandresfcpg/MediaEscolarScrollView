@@ -1,5 +1,6 @@
 package app.daazi.aluno.mediaescolarscrollview;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,6 +76,8 @@ public class SegundoBimestreActivity extends AppCompatActivity {
                         if (media >= 7) txtSituacaoFinal.setText("Aprovado");
                         else txtSituacaoFinal.setText("Reprovado");
 
+                        salvarSharedPreferences();
+
                     }
                 }catch (Exception e){
                     Toast.makeText(getApplicationContext(),"Informe os dados...",Toast.LENGTH_LONG).show();
@@ -105,5 +108,21 @@ public class SegundoBimestreActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void salvarSharedPreferences(){
+
+        SharedPreferences mediaEscolarPref = getSharedPreferences(MainActivity.NOME_SHARED_PREFER, 0);
+        SharedPreferences.Editor mediaEscolar = mediaEscolarPref.edit();
+
+        mediaEscolar.putString("materiaSegundoBimestre", editMateria.getText().toString());
+        mediaEscolar.putString("situacaoSegundoBimestre", txtSituacaoFinal.getText().toString());
+        mediaEscolar.putString("notaProvaSegundoBimestre", String.valueOf(notaProva));
+        mediaEscolar.putString("notaTrabalhoSegundoBimestre", String.valueOf(notaTrabalho));
+        mediaEscolar.putString("mediaSegundoBimestre", String.valueOf(media));
+        mediaEscolar.putBoolean("segundoBimestre", true);
+
+        mediaEscolar.commit();
+
     }
 }

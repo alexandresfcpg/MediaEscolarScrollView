@@ -12,18 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import app.daazi.aluno.mediaescolarscrollview.databinding.ActivityMainBinding;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,9 +26,12 @@ public class MainActivity extends AppCompatActivity {
     Button btnPrimeiroBimestre, btnSegundoBimestre, btnTerceiroBimestre, btnQuartoBimestre, btnResultadoFinal;
 
     boolean primeiroBimestre, segundoBimestre, terceiroBimestre, quartoBimestre;
-
-    String situacaoAtualPrimeiroBimestre, materiaPrimeiroBimestre;
-    double notaProvaPrimeiroBimestre, notaTrabalhoPrimeiroBimestre, mediaPrimeiroBimestre;
+    String materiaPrimeiroBimestre, materiaSegundoBimestre, materiaTerceiroBimestre, materiaQuartoBimestre;
+    String situacaoPrimeiroBimestre, situacaoSegundoBimestre, situacaoTerceiroBimestre, situacaoQuartoBimestre;
+    String notaProvaPrimeiroBimestre, notaProvaSegundoBimestre, notaProvaTerceiroBimestre, notaProvaQuartoBimestre;
+    String notaTrabalhoPrimeiroBimestre, notaTrabalhoSegundoBimestre, notaTrabalhoTerceiroBimestre, notaTrabalhoQuartoBimestre;
+    String mediaPrimeiroBimestre, mediaSegundoBimestre, mediaTerceiroBimestre, mediaQuartoBimestre;
+    double mediaFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         /*Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
-        Log.i("MediaEscolar","onCreate");
+        Log.i("MediaEscolar", "onCreate");
 
         lerSharedPreferences();
 
@@ -108,10 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Limpando todos os registros", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                clearSharedPreferences();
             }
         });
+
+        visualizarResultado();
 
     }
 
@@ -141,22 +142,125 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void lerSharedPreferences(){
+    private void lerSharedPreferences() {
 
         SharedPreferences mediaEscolarPref = getSharedPreferences(NOME_SHARED_PREFER, 0);
 
-        primeiroBimestre = mediaEscolarPref.getBoolean("primeiroBimestre", false);
-        situacaoAtualPrimeiroBimestre = mediaEscolarPref.getString("txtSituacaoFinal", "");
-        materiaPrimeiroBimestre = mediaEscolarPref.getString("materia", "");
-        mediaPrimeiroBimestre = Double.parseDouble(mediaEscolarPref.getString("media", "0.0"));
-        notaProvaPrimeiroBimestre = Double.parseDouble(mediaEscolarPref.getString("notaProva", "0.0"));
-        notaTrabalhoPrimeiroBimestre = Double.parseDouble(mediaEscolarPref.getString("notaTrabalho", "0.0"));
 
-       int x = 0;
+        materiaPrimeiroBimestre = mediaEscolarPref.getString("materiaPrimeiroBimestre", "");
+        materiaSegundoBimestre = mediaEscolarPref.getString("materiaSegundoBimestre", "");
+        materiaTerceiroBimestre = mediaEscolarPref.getString("materiaTerceiroBimestre", "");
+        materiaQuartoBimestre = mediaEscolarPref.getString("materiaQuartoBimestre", "");
+
+        situacaoPrimeiroBimestre = mediaEscolarPref.getString("situacaoPrimeiroBimestre", "");
+        situacaoSegundoBimestre = mediaEscolarPref.getString("situacaoSegundoBimestre", "");
+        situacaoTerceiroBimestre = mediaEscolarPref.getString("situacaoTerceiroBimestre", "");
+        situacaoQuartoBimestre = mediaEscolarPref.getString("situacaoQuartoBimestre", "");
+
+        notaProvaPrimeiroBimestre = mediaEscolarPref.getString("notaProvaPrimeiroBimestre", "0.0");
+        notaProvaSegundoBimestre = mediaEscolarPref.getString("notaProvaSegundoBimestre", "0.0");
+        notaProvaTerceiroBimestre = mediaEscolarPref.getString("notaProvaTerceiroBimestre", "0.0");
+        notaProvaQuartoBimestre = mediaEscolarPref.getString("notaProvaQuartoBimestre", "0.0");
+
+        notaTrabalhoPrimeiroBimestre = mediaEscolarPref.getString("notaTrabalhoPrimeiroBimestre", "0.0");
+        notaTrabalhoSegundoBimestre = mediaEscolarPref.getString("notaTrabalhoSegundoBimestre", "0.0");
+        notaTrabalhoTerceiroBimestre = mediaEscolarPref.getString("notaTrabalhoTerceiroBimestre", "0.0");
+        notaTrabalhoQuartoBimestre = mediaEscolarPref.getString("notaTrabalhoQuartoBimestre", "0.0");
+
+        mediaPrimeiroBimestre = mediaEscolarPref.getString("mediaPrimeiroBimestre", "0.0");
+        mediaSegundoBimestre = mediaEscolarPref.getString("mediaSegundoBimestre", "0.0");
+        mediaTerceiroBimestre = mediaEscolarPref.getString("mediaTerceiroBimestre", "0.0");
+        mediaQuartoBimestre = mediaEscolarPref.getString("mediaQuartoBimestre", "0.0");
+
+        primeiroBimestre = mediaEscolarPref.getBoolean("primeiroBimestre", false);
+        segundoBimestre = mediaEscolarPref.getBoolean("segundoBimestre", false);
+        terceiroBimestre = mediaEscolarPref.getBoolean("terceiroBimestre", false);
+        quartoBimestre = mediaEscolarPref.getBoolean("quartoBimestre", false);
+
+
     }
 
-    private void clearSharedPreferences(){
+    private void visualizarResultado() {
 
+        if (primeiroBimestre) {
+            btnPrimeiroBimestre.setText(materiaPrimeiroBimestre + " - 1º Bimestre " + situacaoPrimeiroBimestre + " - Nota" + formatarValorDecimal(Double.parseDouble(mediaPrimeiroBimestre)));
+            btnPrimeiroBimestre.setEnabled(false);
+            btnSegundoBimestre.setEnabled(primeiroBimestre);
+        }
+
+        if (segundoBimestre) {
+            btnSegundoBimestre.setText(materiaSegundoBimestre + " - 2º Bimestre " + situacaoSegundoBimestre + " - Nota" + formatarValorDecimal(Double.parseDouble(mediaSegundoBimestre)));
+            btnSegundoBimestre.setEnabled(false);
+            btnTerceiroBimestre.setEnabled(segundoBimestre);
+        }
+
+        if (terceiroBimestre) {
+            btnTerceiroBimestre.setText(materiaTerceiroBimestre + " - 3º Bimestre " + situacaoTerceiroBimestre + " - Nota" + formatarValorDecimal(Double.parseDouble(mediaTerceiroBimestre)));
+            btnTerceiroBimestre.setEnabled(false);
+            btnQuartoBimestre.setEnabled(terceiroBimestre);
+        }
+
+        if (quartoBimestre) {
+            btnQuartoBimestre.setText(materiaQuartoBimestre + " - 4º Bimestre " + situacaoQuartoBimestre + " - Nota" + formatarValorDecimal(Double.parseDouble(mediaQuartoBimestre)));
+            btnQuartoBimestre.setEnabled(false);
+            btnResultadoFinal.setEnabled(true);
+
+            mediaFinal = 0;
+            mediaFinal += Double.parseDouble(mediaPrimeiroBimestre);
+            mediaFinal += Double.parseDouble(mediaSegundoBimestre);
+            mediaFinal += Double.parseDouble(mediaTerceiroBimestre);
+            mediaFinal += Double.parseDouble(mediaQuartoBimestre);
+
+            String mensagemFinal = "";
+
+            mediaFinal = (mediaFinal / 4);
+
+            if ((Double.parseDouble(mediaPrimeiroBimestre) >= 7)
+                    && (Double.parseDouble(mediaSegundoBimestre) >= 7)
+                    && (Double.parseDouble(mediaTerceiroBimestre) >= 7)
+                    && (Double.parseDouble(mediaQuartoBimestre) >= 7)) {
+
+                mensagemFinal = mediaFinal >= 7 ? "Aprovado com Média Final " + formatarValorDecimal(mediaFinal) :
+                        "Reprovado com Média Final " + formatarValorDecimal(mediaFinal);
+            } else {
+                mensagemFinal = "Reprovado por matéria com média final " + formatarValorDecimal(mediaFinal);
+            }
+
+            btnResultadoFinal.setText(mensagemFinal);
+        }
+
+    }
+
+    private static String formatarValorDecimal(double valor) {
+
+        DecimalFormat df = new DecimalFormat("#,###,##0.00");
+        return df.format(valor);
+    }
+
+    private void clearSharedPreferences() {
+
+        SharedPreferences mediaEscolarPref = getSharedPreferences(NOME_SHARED_PREFER, 0);
+        SharedPreferences.Editor editor = mediaEscolarPref.edit();
+        editor.clear();
+        editor.commit();
+
+        clearMenur();
+
+    }
+
+    private void clearMenur() {
+
+        btnResultadoFinal.setEnabled(false);
+        btnQuartoBimestre.setEnabled(false);
+        btnTerceiroBimestre.setEnabled(false);
+        btnSegundoBimestre.setEnabled(false);
+        btnPrimeiroBimestre.setEnabled(true);
+
+        btnResultadoFinal.setText("Resultado Final");
+        btnPrimeiroBimestre.setText("1º Bimestre");
+        btnSegundoBimestre.setText("2º Bimestre");
+        btnTerceiroBimestre.setText("3º Bimestre");
+        btnQuartoBimestre.setText("4º Bimestre");
     }
 
     @Override
@@ -169,16 +273,10 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        Log.i("MediaEscolar", "---> OnResume");
-
-       primeiroBimestre = true;
-
-       if (primeiroBimestre) {
-           btnPrimeiroBimestre.setEnabled(true);
-           btnSegundoBimestre.setEnabled(true);
-           btnPrimeiroBimestre.setText("FECHADO");
-       }
+        lerSharedPreferences();
+        visualizarResultado();
     }
+
 
     @Override
     public void onPause() {
@@ -195,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void onRestart(){
+    public void onRestart() {
         super.onRestart();
     }
 }
